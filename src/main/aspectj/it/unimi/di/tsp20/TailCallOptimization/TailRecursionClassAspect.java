@@ -9,6 +9,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Aspect
 public class TailRecursionClassAspect {
@@ -22,12 +23,11 @@ public class TailRecursionClassAspect {
 
         Throwable th = new Throwable();
         StackTraceElement[] stack = th.getStackTrace();
-        List<String> ls= Arrays.stream(stack)
-                .map(StackTraceElement::getMethodName)
-                .filter(p->p.equals(thisMethod.getName()))
-                .collect(Collectors.toList());
-
-        if(ls.size()>=2)
+        Stream<StackTraceElement> ls= Arrays.stream(stack)
+                .filter(p->p.getClassName().equals(thisMethod.getDeclaringClass().getCanonicalName())
+                            && p.getMethodName().equals(thisMethod.getName()));
+        
+        if(ls.count() ==2)
             throw new TailRecursionException(thisJoinPoint.getSignature().toLongString(), args);
         else{
             while(true)
