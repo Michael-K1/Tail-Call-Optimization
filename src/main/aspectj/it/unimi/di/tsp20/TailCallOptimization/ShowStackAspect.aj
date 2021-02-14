@@ -1,14 +1,10 @@
-package it.unimi.di.tsp20;
-
-import it.unimi.di.tsp20.annotation.ShowStack;
-import org.aspectj.lang.reflect.MethodSignature;
-import java.lang.reflect.Method;
-
+package it.unimi.di.tsp20.TailCallOptimization;
+import it.unimi.di.tsp20.TailCallOptimization.annotation.ShowStack;
 public aspect ShowStackAspect {
+
     pointcut tailRecExecution(): execution(@ShowStack * *.*(..)) && !within(*Aspect);  //execution() to show the stack INSIDE the called method
     
     before(): tailRecExecution(){
-        Method thisMethod= ((MethodSignature) thisJoinPointStaticPart.getSignature()).getMethod();
 
         Throwable th = new Throwable();
         StackTraceElement[] stack = th.getStackTrace();
@@ -21,6 +17,6 @@ public aspect ShowStackAspect {
                     :ConsoleColors.CYAN_BOLD;
             System.out.println(String.format("\t\t %s%3d: %s%s", color, len-x-1, stack[x].getMethodName(), ConsoleColors.RESET));
         }
-        
+
     }
 }

@@ -1,10 +1,14 @@
-package it.unimi.di.tsp20;
+package it.unimi.di.tsp20.TailCallOptimization;
 
-import it.unimi.di.tsp20.annotation.TailRecursion;
+import it.unimi.di.tsp20.TailCallOptimization.annotation.TailRecursion;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Aspect
 public class TailRecursionClassAspect {
@@ -14,21 +18,26 @@ public class TailRecursionClassAspect {
     public Object TailCallOptimization(ProceedingJoinPoint thisJoinPoint) {
         var args=thisJoinPoint.getArgs();
 
+        Method thisMethod= ((MethodSignature) thisJoinPoint.getStaticPart().getSignature()).getMethod();
+
         Throwable th = new Throwable();
         StackTraceElement[] stack = th.getStackTrace();
-        int len=stack.length;
+        List<String> ls= Arrays.stream(stack)
+                .map(StackTraceElement::getMethodName)
+                .filter(p->p.equals(thisMethod.getName()))
+                .collect(Collectors.toList());
 
-        //[1] and [4] are the stack frames of the recursive function;
-        //between them there are frames created by this Advice
-        if(len>=5 && stack[1].getMethodName().equals(stack[4].getMethodName()))
-            throw new TailRecursionException(args);
+        if(ls.size()>=2)
+            throw new TailRecursionException(thisMethod.getName(),args);
         else{
             while(true)
                 try {
-                    //a call to 'proceed' generates 3 frames: 2 for the management of the Advice and 1 of the recursive call
                     return thisJoinPoint.proceed(args);
                 } catch (TailRecursionException tre) {
-                    args = tre.args;
+                    if(thisMethod.getName().equals(tre.method))
+                        args = tre.args;
+                    else
+                        throw tre;
                 } catch (Throwable throwable) {
                     throwable.printStackTrace();
                 }
