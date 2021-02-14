@@ -1,8 +1,10 @@
 package it.unimi.di.tsp20;
 
+import it.unimi.di.tsp20.annotation.TailRecursion;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.reflect.MethodSignature;
 
 @Aspect
 public class TailRecursionClassAspect {
@@ -12,6 +14,13 @@ public class TailRecursionClassAspect {
     public Object TailCallOptimization(ProceedingJoinPoint thisJoinPoint) {
         var args=thisJoinPoint.getArgs();
 
+        if(((MethodSignature)thisJoinPoint.getSignature()).getMethod().getAnnotation(TailRecursion.class)==null) {
+            try {
+                return thisJoinPoint.proceed(args);
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
+            }
+        }
         Throwable th = new Throwable();
         StackTraceElement[] stack = th.getStackTrace();
         int len=stack.length;

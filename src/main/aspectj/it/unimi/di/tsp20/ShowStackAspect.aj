@@ -1,5 +1,6 @@
 package it.unimi.di.tsp20;
 
+import it.unimi.di.tsp20.annotation.ShowStack;
 import org.aspectj.lang.reflect.MethodSignature;
 import java.lang.reflect.Method;
 
@@ -8,8 +9,8 @@ public aspect ShowStackAspect {
     
     before(): tailRecExecution(){
         Method thisMethod= ((MethodSignature) thisJoinPointStaticPart.getSignature()).getMethod();
-        
-        if(thisMethod.getAnnotation(TailRecursion.class)==null) return; //only with @TailRecursion the stack is shown
+
+        if(thisMethod.getAnnotation(ShowStack.class)==null)return;
 
         Throwable th = new Throwable();
         StackTraceElement[] stack = th.getStackTrace();
