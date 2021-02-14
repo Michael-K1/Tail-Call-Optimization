@@ -33,8 +33,6 @@ public class TailRecursionClassAspect {
         Stream<Signature>stackStream=CustomStackAspect.customStack.stream()
                 .filter(p-> p.toLongString().equals(thisMethod));
 
-
-        //if(streamSTE.count() ==2)
         if(stackStream.count() ==2)
             throw new TailRecursionException(thisMethod, args);
         else{

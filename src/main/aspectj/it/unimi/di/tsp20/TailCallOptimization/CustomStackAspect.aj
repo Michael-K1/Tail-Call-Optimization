@@ -9,6 +9,9 @@ import java.util.Stack;
  * of the original method.
  */
 public aspect CustomStackAspect {
+    /**
+     * Stack of Signature
+     */
     public static Stack<Signature> customStack =new Stack<>();
 
     pointcut methodCall(): call(@TailRecursion * *.*(..)) && !within(*Aspect);
