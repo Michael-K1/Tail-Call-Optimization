@@ -20,7 +20,7 @@ public aspect ShowStackAspect {
             String color= x%2==0
                     ?ConsoleColors.BLUE_BOLD
                     :ConsoleColors.CYAN_BOLD;
-            System.out.println(String.format("\t\t %s%d: %s%s", color, len-x-1, stack[x].getMethodName(), ConsoleColors.RESET));
+            System.out.println(String.format("\t\t %s%3d: %s%s", color, len-x-1, stack[x].getMethodName(), ConsoleColors.RESET));
         }
         
     }
