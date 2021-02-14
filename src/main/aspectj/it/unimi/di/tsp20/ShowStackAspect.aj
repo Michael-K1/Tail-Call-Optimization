@@ -4,7 +4,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import java.lang.reflect.Method;
 
 public aspect ShowStackAspect {
-    pointcut tailRecExecution(): execution(* *.*(..));
+    pointcut tailRecExecution(): execution(* *.*(..)) && !within(*Aspect);  //execution() to show the stack INSIDE the called method
     
     before(): tailRecExecution(){
         Method thisMethod= ((MethodSignature) thisJoinPointStaticPart.getSignature()).getMethod();

@@ -9,9 +9,9 @@ public aspect CheckExecutionTimeAspect pertarget(methodCall()){
 
     public int counter;
 
-    pointcut methodCall(): call(* *.*(..)) ;
+    pointcut methodCall(): call(* *.*(..)) && !within(*Aspect);
 
-    before(): methodCall() && !within(*Aspect){
+    before(): methodCall() {
         Method thisMethod= ((MethodSignature) thisJoinPointStaticPart.getSignature()).getMethod();
         if(thisMethod.getAnnotation(TailRecursion.class)==null) return; //only with @TailRecursion a timer is started to check the performance
 
@@ -32,7 +32,7 @@ public aspect CheckExecutionTimeAspect pertarget(methodCall()){
         }
     }
 
-    after() returning: methodCall() && !within(*Aspect){
+    after() returning: methodCall(){
         Method thisMethod= ((MethodSignature) thisJoinPointStaticPart.getSignature()).getMethod();
         if(thisMethod.getAnnotation(TailRecursion.class)==null) return;
 
