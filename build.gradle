@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+
+    id 'application'
+
+    id 'io.freefair.aspectj' version '5.1.0'
+}
+
+repositories {
+    jcenter()
+
+}
+
+dependencies {
+
+    implementation 'org.aspectj:aspectjrt:1.9.5'
+}
+
+application{
+    mainClassName='it.unimi.di.tsp20.MainApp'
+}
