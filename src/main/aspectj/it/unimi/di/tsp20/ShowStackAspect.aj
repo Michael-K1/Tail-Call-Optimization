@@ -12,8 +12,9 @@ public aspect ShowStackAspect {
 
         Throwable th = new Throwable();
         System.out.println("########################################################################");
-        for (int x =0;x<th.getStackTrace().length;x++)
-            System.out.println("\t "+x+" " +th.getStackTrace()[x]);
+        int len=th.getStackTrace().length;
+        for (int x =1;x<len;x++)
+            System.out.println("\t "+(len-x-1)+" " +th.getStackTrace()[x]);
         
     }
 }
