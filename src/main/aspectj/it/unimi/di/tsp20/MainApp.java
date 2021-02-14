@@ -12,6 +12,7 @@ public class MainApp {
 
         System.out.println(ma.getGreeting());
         System.out.println("tailFact(10)= "+ma.tailFact(10, 1));
+        System.out.println("tailFactNotOptimized(10)= "+ma.tailFactNotOptimized(10, 1));
         System.out.println("fact(10)= "+ma.fact(10));
         System.out.println("tailFib(42)= "+ma.tailFib(42, 0, 1));
         System.out.println("fib(15)= "+ma.fib(15));
@@ -25,6 +26,14 @@ public class MainApp {
         return n==1
                 ? a
                 :tailFact(n-1, a*n);
+    }
+
+    @ShowStack
+    @ExecutionTime
+    private int tailFactNotOptimized(int n, int a){
+        return n==1
+                ? a
+                :tailFactNotOptimized(n-1, a*n);
     }
 
     @ShowStack

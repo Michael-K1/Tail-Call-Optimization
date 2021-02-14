@@ -5,12 +5,10 @@ import org.aspectj.lang.reflect.MethodSignature;
 import java.lang.reflect.Method;
 
 public aspect ShowStackAspect {
-    pointcut tailRecExecution(): execution(* *.*(..)) && !within(*Aspect);  //execution() to show the stack INSIDE the called method
+    pointcut tailRecExecution(): execution(@ShowStack * *.*(..)) && !within(*Aspect);  //execution() to show the stack INSIDE the called method
     
     before(): tailRecExecution(){
         Method thisMethod= ((MethodSignature) thisJoinPointStaticPart.getSignature()).getMethod();
-
-        if(thisMethod.getAnnotation(ShowStack.class)==null)return;
 
         Throwable th = new Throwable();
         StackTraceElement[] stack = th.getStackTrace();

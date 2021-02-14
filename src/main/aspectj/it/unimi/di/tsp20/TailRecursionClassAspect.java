@@ -10,17 +10,10 @@ import org.aspectj.lang.reflect.MethodSignature;
 public class TailRecursionClassAspect {
 
     //moved to SpringAOP to take advantage of the ProceedingJoinPoint
-    @Around("execution(* *.*(..)) && !within(*Aspect)")
+    @Around("execution(@TailRecursion * *.*(..)) && !within(*Aspect)")
     public Object TailCallOptimization(ProceedingJoinPoint thisJoinPoint) {
         var args=thisJoinPoint.getArgs();
 
-        if(((MethodSignature)thisJoinPoint.getSignature()).getMethod().getAnnotation(TailRecursion.class)==null) {
-            try {
-                return thisJoinPoint.proceed(args);
-            } catch (Throwable throwable) {
-                throwable.printStackTrace();
-            }
-        }
         Throwable th = new Throwable();
         StackTraceElement[] stack = th.getStackTrace();
         int len=stack.length;
