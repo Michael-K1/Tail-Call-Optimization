@@ -28,13 +28,13 @@ public class TailRecursionClassAspect {
                 .collect(Collectors.toList());
 
         if(ls.size()>=2)
-            throw new TailRecursionException(thisMethod.getName(),args);
+            throw new TailRecursionException(thisJoinPoint.getSignature().toLongString(), args);
         else{
             while(true)
                 try {
                     return thisJoinPoint.proceed(args);
                 } catch (TailRecursionException tre) {
-                    if(thisMethod.getName().equals(tre.method))
+                    if(thisJoinPoint.getSignature().toLongString().equals(tre.method))
                         args = tre.args;
                     else
                         throw tre;
