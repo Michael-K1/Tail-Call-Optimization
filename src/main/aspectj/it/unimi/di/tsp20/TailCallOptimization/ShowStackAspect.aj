@@ -1,5 +1,10 @@
 package it.unimi.di.tsp20.TailCallOptimization;
+
 import it.unimi.di.tsp20.TailCallOptimization.annotation.ShowStack;
+
+/**
+ * Aspect that prints the stack of a method annotated with <i>@ShowStack</i>
+ */
 public aspect ShowStackAspect {
 
     pointcut tailRecExecution(): execution(@ShowStack * *.*(..)) && !within(*Aspect);  //execution() to show the stack INSIDE the called method

@@ -5,16 +5,27 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Aspect that performs Tail Call Optimization (TCO) to functions annotated with <i>@TailRecursion</i>
+ */
 @Aspect
 public class TailRecursionClassAspect {
 
-    //moved to SpringAOP to take advantage of the ProceedingJoinPoint
+    /**
+     * Wraps the tail recursive function to perform TCO.<br>
+     * This opptimization drastically reduces the the amount of stack frames genereted<br>
+     * by a method.<br>
+     * Works with Simple and <a href=https://en.wikipedia.org/wiki/Mutual_recursion>Mutual Recursive</a> functions
+     *
+     * @param thisJoinPoint ProceedingJoinPoint in the corresponding method
+     *
+     * @return the result of the tail recursive function.
+     */
     @Around("execution(@TailRecursion * *.*(..)) && !within(*Aspect)")
     public Object TailCallOptimization(ProceedingJoinPoint thisJoinPoint) {
         var args=thisJoinPoint.getArgs();
@@ -23,11 +34,11 @@ public class TailRecursionClassAspect {
 
         Throwable th = new Throwable();
         StackTraceElement[] stack = th.getStackTrace();
-        Stream<StackTraceElement> ls= Arrays.stream(stack)
+        Stream<StackTraceElement> streamSTE= Arrays.stream(stack)
                 .filter(p->p.getClassName().equals(thisMethod.getDeclaringClass().getCanonicalName())
                             && p.getMethodName().equals(thisMethod.getName()));
-        
-        if(ls.count() ==2)
+
+        if(streamSTE.count() ==2)
             throw new TailRecursionException(thisJoinPoint.getSignature().toLongString(), args);
         else{
             while(true)

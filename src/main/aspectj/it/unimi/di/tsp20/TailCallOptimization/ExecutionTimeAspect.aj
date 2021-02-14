@@ -5,13 +5,34 @@ import com.google.common.base.Stopwatch;
 import org.aspectj.lang.reflect.MethodSignature;
 import java.lang.reflect.Method;
 
+/**
+ * Aspect that logs the execution time of function annotated with <i>@ExecutionTime</i>.
+ */
 public aspect ExecutionTimeAspect pertarget(methodCall()){
+
+    /**
+     * Timer that tracks the execution time of the function.
+     */
     private static final Stopwatch timer= Stopwatch.createUnstarted();
-    private  Method thisMethod=null;
+
+    /**
+     * Reference to the method whose execution time is being recorded.
+     */
+    private Method thisMethod=null;
+
+    /**
+     * Number of recursive call inside the method.
+     */
     private int counter;
 
+    /*
+     *  Pointcut that catches every call to a function annotated with <i>@ExecutionTime</i>.
+     */
     pointcut methodCall(): call(@ExecutionTime * *.*(..)) && !within(*Aspect);
 
+    /*
+     * Starts the timer before the first call to the function.
+     */
     before(): methodCall() {
         if(thisMethod==null)
             thisMethod= ((MethodSignature) thisJoinPointStaticPart.getSignature()).getMethod();
@@ -26,12 +47,15 @@ public aspect ExecutionTimeAspect pertarget(methodCall()){
         }
     }
 
+    /*
+     * Stops the timer after the execution of the function.
+     */
     after() returning: methodCall(){
 
         if(timer.isRunning())
             timer.stop();
         if(!timer.elapsed().isZero()) {
-            System.out.println(String.format( "\t%sExecution END: '%s()'.%s \n\t\tTOTAL TIME: %s.%s", ConsoleColors.RED_BOLD, thisMethod.getName(), ConsoleColors.YELLOW, timer, ConsoleColors.RESET));
+            System.out.println(String.format( "\t%sExecution END: '%s()'.%s \n\t\tTOTAL TIME: %s.\n\t\tTOTAL RECURSIVE CALLS: %3d%s", ConsoleColors.RED_BOLD, thisMethod.getName(), ConsoleColors.YELLOW, timer, counter, ConsoleColors.RESET));
             thisMethod=null;
         }
         timer.reset();  //avoid creation of more StopWatches

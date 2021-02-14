@@ -1,5 +1,8 @@
 package it.unimi.di.tsp20.TailCallOptimization;
 
+/**
+ * Colors used to format strings in the console.
+ */
 public class ConsoleColors {
 
     // Reset
