@@ -28,7 +28,7 @@ public aspect CheckExecutionTimeAspect pertarget(methodCall()){
             counter=0;
         }else{   //a bit verbose but helps to see  the time variation
             counter++;
-            System.out.println(String.format( "\t%sRecursive Call n°%d to '%s'. Execution continues: %s%s", ConsoleColors.YELLOW, counter, thisMethod.getName(), timer,ConsoleColors.RESET));
+            System.out.println(String.format( "\t%sRecursive Call n°%3d to '%s'. Execution continues: %s%s", ConsoleColors.YELLOW, counter, thisMethod.getName(), timer,ConsoleColors.RESET));
         }
     }
 
