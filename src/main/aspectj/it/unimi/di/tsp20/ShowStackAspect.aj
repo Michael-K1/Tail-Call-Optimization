@@ -14,7 +14,7 @@ public aspect ShowStackAspect {
         System.out.println("########################################################################");
         int len=th.getStackTrace().length;
         for (int x =1;x<len;x++)
-            System.out.println("\t "+String.format("%3d",len-x-1)+" " +th.getStackTrace()[x]);
+            System.out.println("\t "+String.format("%3d",len-x-1)+" " +th.getStackTrace()[x].getMethodName());
         
     }
 }
