@@ -8,12 +8,12 @@ plugins {
 
 repositories {
     jcenter()
-
 }
 
 dependencies {
 
     implementation 'org.aspectj:aspectjrt:1.9.5'
+    implementation 'com.google.guava:guava:29.0-jre'
 }
 
 application{

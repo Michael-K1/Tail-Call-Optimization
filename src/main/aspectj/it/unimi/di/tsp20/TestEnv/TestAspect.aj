@@ -1,8 +1,9 @@
 package it.unimi.di.tsp20.TestEnv;
 
+import it.unimi.di.tsp20.MainApp;
 public aspect TestAspect {
 
-    before(): call(java.lang.String it.unimi.di.tsp20.MainApp.getGreeting()){
+    before(): call(String MainApp.getGreeting()){
         System.err.println("about to greet...");
     }
 }
