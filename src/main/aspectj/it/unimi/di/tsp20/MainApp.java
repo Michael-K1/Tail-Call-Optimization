@@ -11,17 +11,17 @@ public class MainApp {
     public static void main(String[] args) {
         MainApp ma =  new MainApp();
 
-        System.out.println("tailFact(10)= "+ma.tailFact(10, 1));
-        System.out.println("tailFactNotOptimized(10)= "+ma.tailFactNotOptimized(10, 1));
-        System.out.println("fact(10)= "+ma.fact(10));
-        System.out.println("tailFib(42)= "+ma.tailFib(42, 0, 1));
-        System.out.println("fib(15)= "+ma.fib(15));
-        System.out.println("arraySum( 2, 55, 1, 7, 10, 73, 5)= "+ma.arraySum(new int[]{ 2, 55, 1, 7, 10, 73, 5 }, 7, 0));
+        System.out.format("tailFact(10)= %d\n",ma.tailFact(10, 1));
+        System.out.format("tailFactNotOptimized(10)= %d\n",ma.tailFactNotOptimized(10, 1));
+        System.out.format("fact(10)= %d\n",ma.fact(10));
+        System.out.format("tailFib(42)=%d\n",ma.tailFib(42, 0, 1));
+        System.out.format("fib(15)= %d\n",ma.fib(15));
+        System.out.format("arraySum( 2, 55, 1, 7, 10, 73, 5)= %d\n",ma.arraySum(new int[]{ 2, 55, 1, 7, 10, 73, 5 }, 7, 0));
 
-        System.out.println("isOdd(10)= "+ ma.is_odd(10));
-        System.out.println("isEven(10)= "+ ma.is_even(10));
-        System.out.println("isOdd(11)= "+ ma.is_odd(11));
-        System.out.println("isEven(11)= "+ ma.is_even(11));
+        System.out.format("isOdd(10)= %s\n", ma.is_odd(10));
+        System.out.format("isEven(10)= %s\n", ma.is_even(10));
+        System.out.format("isOdd(11)= %s\n", ma.is_odd(11));
+        System.out.format("isEven(11)= %s\n", ma.is_even(11));
     }
 
     @ShowStack
