@@ -2,12 +2,10 @@ package it.unimi.di.tsp20.TailCallOptimization;
 
 import it.unimi.di.tsp20.TailCallOptimization.annotation.TailRecursion;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.reflect.MethodSignature;
 
-import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.stream.Stream;
 
 /**
@@ -30,22 +28,21 @@ public class TailRecursionClassAspect {
     public Object TailCallOptimization(ProceedingJoinPoint thisJoinPoint) {
         var args=thisJoinPoint.getArgs();
 
-        Method thisMethod= ((MethodSignature) thisJoinPoint.getStaticPart().getSignature()).getMethod();
+        String thisMethod= thisJoinPoint.getSignature().toLongString();
 
-        Throwable th = new Throwable();
-        StackTraceElement[] stack = th.getStackTrace();
-        Stream<StackTraceElement> streamSTE= Arrays.stream(stack)
-                .filter(p->p.getClassName().equals(thisMethod.getDeclaringClass().getCanonicalName())
-                            && p.getMethodName().equals(thisMethod.getName()));
+        Stream<Signature>stackStream=CustomStackAspect.customStack.stream()
+                .filter(p-> p.toLongString().equals(thisMethod));
 
-        if(streamSTE.count() ==2)
-            throw new TailRecursionException(thisJoinPoint.getSignature().toLongString(), args);
+
+        //if(streamSTE.count() ==2)
+        if(stackStream.count() ==2)
+            throw new TailRecursionException(thisMethod, args);
         else{
             while(true)
                 try {
                     return thisJoinPoint.proceed(args);
                 } catch (TailRecursionException tre) {
-                    if(thisJoinPoint.getSignature().toLongString().equals(tre.method))
+                    if(thisMethod.equals(tre.method))
                         args = tre.args;
                     else
                         throw tre;
