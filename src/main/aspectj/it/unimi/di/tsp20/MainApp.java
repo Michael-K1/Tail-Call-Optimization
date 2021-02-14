@@ -13,7 +13,7 @@ public class MainApp {
 
     }
 
-
+    @TailRecursion
     private int tailFact(int n, int a){ //tail recursive
         th=new Throwable();
         System.out.println("########################################################################");
@@ -26,9 +26,11 @@ public class MainApp {
 
 
     private int tailFib(int n, int prev, int next) {
-        return n==1
-                ?next
-                :tailFib(n-1, next, prev+next);
+        return n==0
+                ?prev
+                :n==1
+                    ?next
+                    :tailFib(n-1, next, prev+next);
 
     }
 }
