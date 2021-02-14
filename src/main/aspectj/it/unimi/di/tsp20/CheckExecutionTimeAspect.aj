@@ -1,7 +1,7 @@
 package it.unimi.di.tsp20;
 import com.google.common.base.Stopwatch;
 
-public aspect CheckExecutionTime pertarget(methodCall()){
+public aspect CheckExecutionTimeAspect pertarget(methodCall()){
     public Stopwatch timer= Stopwatch.createUnstarted();
     pointcut methodCall(): call(* *.*(..))  ;
 
