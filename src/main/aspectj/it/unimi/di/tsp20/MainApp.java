@@ -7,26 +7,19 @@ public class MainApp {
         MainApp ma =  new MainApp();
 
         System.out.println(ma.getGreeting());
-        System.out.println("fact "+ma.fact(42));
-        System.out.println("fib "+ma.fib(42));
+        System.out.println("fact "+ma.tailFact(10, 1));
+        System.out.println("fib "+ma.tailFib(10, 0, 1));
 
 
     }
 
-    public int fact(int n){
-        return tailFact(n,1);
-    }
 
     private int tailFact(int n, int a){ //tail recursive
-
         return n==1
                 ?a
                 :tailFact(n-1, a*n);
     }
 
-    public int fib(int n){
-        return tailFib(n, 0, 1);
-    }
 
     private int tailFib(int n, int prev, int next) {
         return n==1
