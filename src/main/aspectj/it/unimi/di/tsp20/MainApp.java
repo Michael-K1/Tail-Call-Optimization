@@ -9,7 +9,7 @@ public class MainApp {
         System.out.println(ma.getGreeting());
         System.out.println("fact(10)= "+ma.tailFact(10, 1));
         System.out.println("fib(42)= "+ma.tailFib(42, 0, 1));
-
+        System.out.println("arraySum( 2, 55, 1, 7, 10, 73, 5)= "+ma.arraySum(new int[]{ 2, 55, 1, 7, 10, 73, 5 }, 7, 0));
     }
 
     @TailRecursion
@@ -28,5 +28,10 @@ public class MainApp {
                     :tailFib(n-1,next,prev+next);
     }
 
-
+    @TailRecursion
+    private int arraySum(int[] array, int size, int sum) {
+        return size==0
+                ?sum
+                :arraySum(array, size - 1, sum + array[size - 1]);
+    }
 }
