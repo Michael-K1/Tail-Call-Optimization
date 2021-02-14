@@ -5,11 +5,12 @@ import org.aspectj.lang.reflect.MethodSignature;
 
 public aspect TailRecursionAspect {
 
-    pointcut methodCall(int n, int i): call(* *.*(int, int)) && args(n, i) ; //only fact
+    pointcut methodCall(Object[] a): call(* *.*(Object[])) && args(a) ; //only fact
 
-    Object around(int n, int i): methodCall(n, i){
+    Object around(Object[] args): methodCall(args){
         MethodSignature thisMethod=(MethodSignature) thisJoinPointStaticPart.getSignature();
         MethodSignature enclosingMethod=(MethodSignature) thisEnclosingJoinPointStaticPart.getSignature();
+
 
 /*
         if(thisMethod.getMethod().getAnnotation(TailRecursion.class)==null && enclosingMethod.getMethod().getAnnotation(TailRecursion.class)==null)
@@ -17,19 +18,17 @@ public aspect TailRecursionAspect {
 */
 
         if(enclosingMethod.getMethod().equals(thisMethod.getMethod())){
-            System.out.println("print call " +n+" "+i);
+            //System.out.println("print call " +n+" "+i);
 
-            throw new TailRecursionException(n, i);
+            throw new TailRecursionException(args);
         }else{
             while(true)
                 try {
-                    return proceed(n, i);
+                    return proceed(args);
                 } catch (TailRecursionException tre) {
                     /*for (int x =0;x<tre.getStackTrace().length;x++)
                        System.out.println("\t "+x+" " +tre.getStackTrace()[x]);*/
-                    n = tre.n;
-                    i = tre.i;
-
+                    args = tre.args;
                 }
         }
     }

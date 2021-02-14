@@ -1,12 +1,10 @@
 package it.unimi.di.tsp20;
 
 public class TailRecursionException extends RuntimeException{
-    public final int n;
-    public final int i;
+    public final Object[] args;
 
+    public TailRecursionException(Object[] a){
+        this.args=a;
 
-    public TailRecursionException(int n, int i){
-        this.n=n;
-        this.i=i;
     }
 }
