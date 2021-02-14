@@ -5,7 +5,7 @@ import it.unimi.di.tsp20.TailCallOptimization.annotation.ShowStack;
 import it.unimi.di.tsp20.TailCallOptimization.annotation.TailRecursion;
 
 /**
- * Collection of Recursive Functions and comparison with Tail Recursive Functions with Tail Call Optimization
+ * Collection of Recursive Functions and comparison with Tail Recursive Functions with Tail Call Optimization.
  */
 public class MainApp {
     public static void main(String[] args) {

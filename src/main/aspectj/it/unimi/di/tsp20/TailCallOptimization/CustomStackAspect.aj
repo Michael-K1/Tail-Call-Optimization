@@ -21,7 +21,8 @@ public aspect CustomStackAspect {
     }
 
     after() : methodCall(){
-        customStack.pop();
+        if(!customStack.isEmpty())
+            customStack.pop();
     }
 
 

@@ -16,7 +16,7 @@ public class TailRecursionClassAspect {
 
     /**
      * Wraps the tail recursive function to perform TCO.<br>
-     * This opptimization drastically reduces the the amount of stack frames genereted<br>
+     * This optimization drastically reduces the amount of stack frames genereted<br>
      * by a method.<br>
      * Works with Simple and <a href=https://en.wikipedia.org/wiki/Mutual_recursion>Mutual Recursive</a> functions
      *
@@ -35,18 +35,18 @@ public class TailRecursionClassAspect {
 
         if(stackStream.count() ==2)
             throw new TailRecursionException(thisMethod, args);
-        else{
-            while(true)
-                try {
-                    return thisJoinPoint.proceed(args);
-                } catch (TailRecursionException tre) {
-                    if(thisMethod.equals(tre.method))
-                        args = tre.args;
-                    else
-                        throw tre;
-                } catch (Throwable throwable) {
-                    throwable.printStackTrace();
-                }
-        }
+
+        while(true)
+            try {
+                return thisJoinPoint.proceed(args);
+            } catch (TailRecursionException tre) {
+                if(!thisMethod.equals(tre.method))
+                    throw tre;
+                args = tre.args;
+
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
+            }
+
     }
 }
