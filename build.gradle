@@ -19,3 +19,4 @@ dependencies {
 application{
     mainClassName='it.unimi.di.tsp20.MainApp'
 }
+
